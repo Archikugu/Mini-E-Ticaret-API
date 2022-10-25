@@ -12,33 +12,33 @@ namespace ETicaretAPI.API.Controllers
         readonly private IProductWriteRepository _productWriteRepository;
         readonly private IProductReadRepository _productReadRepository;
 
-        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository)
+        readonly private IOrderWriteRepository _orderWriteRepository;
+        readonly private IOrderReadRepository _orderReadRepository;
+
+        readonly private ICustomerWriteRepository _customerWriteRepository;
+
+        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
+            _orderWriteRepository = orderWriteRepository;
+            _customerWriteRepository = customerWriteRepository;
+            _orderReadRepository = orderReadRepository;
         }
         [HttpGet]
         public async Task Get()
         {
-            //await _productWriteRepository.AddRangeAsync(new()
-            //{
-            //    new(){Id=Guid.NewGuid(),Name="Product 1", Price =100,CreatedDate=DateTime.UtcNow,Stock=10,},
-            //    new(){Id=Guid.NewGuid(),Name="Product 2", Price =200,CreatedDate=DateTime.UtcNow,Stock=20,},
-            //    new(){Id=Guid.NewGuid(),Name="Product 2", Price =300,CreatedDate=DateTime.UtcNow,Stock=30,}
-            //});
-            //var count = await _productWriteRepository.SaveAsync();
+            //var customerId=Guid.NewGuid();
+            //await _customerWriteRepository.AddAsync(new() { Id = customerId, Name = "Muiidddin" });
 
-            Product p = await _productReadRepository.GetByIdAsync("7aa713f7-f041-4932-8b88-319e4d85815d",false);
-            p.Name = "Gokhan";
-            await _productWriteRepository.SaveAsync();
+            //await _orderWriteRepository.AddAsync(new() { Description = "Test Test Test", Adress = "Ankara ,Yenimahalle",CustomerId=customerId });
+            //await _orderWriteRepository.AddAsync(new() { Description = "Test Test Test 2", Adress = "Ankara ,Çankaya",CustomerId=customerId });
+            //_orderWriteRepository.SaveAsync();
 
+            Order order = await _orderReadRepository.GetByIdAsync("55369b15-4c29-407d-8fd9-2972f46c9a5a");
+            order.Adress = "İstanbul";
+            await _orderWriteRepository.SaveAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
-        {
-            Product product = await _productReadRepository.GetByIdAsync(id);
-            return Ok(product);
-        }
     }
 }
